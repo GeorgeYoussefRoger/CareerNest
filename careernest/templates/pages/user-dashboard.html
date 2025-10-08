@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard - CareerNest</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/jobs.css' %}" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">CareerNest</div>
+        <ul class="nav-links">
+          <li><a href="{% url 'user-dashboard' %}">Dashboard</a></li>
+          <li><a href="{% url 'job-list' %}">Browse Jobs</a></li>
+          <li><a href="{% url 'index' %}" class="btn-secondary">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="dashboard-header">
+        <h1>Welcome, <span class="user-name">{{ username }}</span></h1>
+        <a href="{% url 'job-list' %}" class="btn-primary">Browse Jobs</a>
+      </section>
+
+      <section class="dashboard-stats">
+        <div class="stat-card">
+          <h3>Applications</h3>
+          <p class="stat-value">{{ application_count }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Viewed Jobs</h3>
+          <p class="stat-value">0</p>
+        </div>
+      </section>
+
+      <section class="recent-applications">
+        <h2>My Applications</h2>
+        <div class="job-list">
+          {% if applications %} {% for app in applications %}
+          <div class="job-card">
+            <div class="job-header">
+              <h3>{{ app.jobTitle }}</h3>
+              <span class="company-name">{{ app.companyName }}</span>
+            </div>
+            <p class="job-info">Applied: {{ app.appliedAt|date:"F d, Y" }}</p>
+            <p class="application-status {{ app.status|lower|cut:' ' }}">
+              Status: {{ app.status }}
+            </p>
+            <div class="application-details">
+              {% if app.cv_file %}
+              <a href="{{ app.cv_file.url }}" class="btn-secondary" download
+                >Download CV</a
+              >
+              {% endif %}
+              <a
+                href="{% url 'job-details' %}?id={{ app.job.id }}"
+                class="btn-secondary"
+                style="margin-left: 8px"
+                >View Job</a
+              >
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <p>No recent applications.</p>
+          {% endif %}
+        </div>
+      </section>
+
+      <!-- <section class="saved-jobs">
+        <h2>My Saved Jobs</h2>
+        <p>You haven't saved any jobs yet.</p>  
+      </section> -->
+    </main>
+    <div id="toast" class="toast"></div>
+    <footer>
+      <p>&copy; 2025 CareerNest. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
