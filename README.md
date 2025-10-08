@@ -60,7 +60,7 @@ pip install django
 3️⃣ Run the development server
 
 ```
-python manage.py runserver
+python careernest/manage.py runserver
 ```
 
 5️⃣ Access the app by going to `http://127.0.0.1:8000/` in your browser.
